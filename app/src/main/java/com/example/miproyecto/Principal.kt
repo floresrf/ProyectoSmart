@@ -2,6 +2,7 @@ package com.example.miproyecto
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -22,21 +23,24 @@ class Principal : AppCompatActivity() {
             insets
         }
 
-        // Vincular componentes del XML
+        // Recibir los datos (si por alguna razón falla, por defecto será "user")
+        val username = intent.getStringExtra("USERNAME") ?: "Invitado"
+        val rolUsuario = intent.getStringExtra("ROLE") ?: "user"
+
+        Toast.makeText(this, "Hola $username", Toast.LENGTH_SHORT).show()
+
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         val btnregresar: Button = findViewById(R.id.btnRegresar)
 
-        // Configurar el adaptador del ViewPager2
-        val adapter = ViewPagerAdapter(this)
+        // Pasamos el rolUsuario al adaptador
+        val adapter = ViewPagerAdapter(this, rolUsuario)
         viewPager.adapter = adapter
 
+        // Conectar el TabLayout con el ViewPager de forma dinámica
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Inicio"
-                1 -> tab.text = "Clientes"
-                2 -> tab.text = "Compras"
-            }
+            // Le pedimos el título exacto a la lista del adaptador
+            tab.text = adapter.titulos[position]
         }.attach()
 
         // Boton Salir

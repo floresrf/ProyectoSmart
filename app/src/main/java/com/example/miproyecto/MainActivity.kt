@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun verificarCredencialesEnServidor() {
-        val urlLogin = "https://web-api-movil-rene.onrender.com/api/usuarios/login"
+        val urlLogin = "https://api-movil-login-smart.onrender.com/api/usuarios/login"
 
         val userText = ctUsuario.text.toString().trim()
         val passText = ctContraseña.text.toString().trim()
@@ -63,11 +63,20 @@ class MainActivity : AppCompatActivity() {
 
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, urlLogin, jsonBody,
             { response ->
-                // Éxito: El servidor regresó Status 200 (Match perfecto en Neon)
                 val mensaje = response.getString("mensaje")
                 Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
 
+                // Extraemos el username y el role del JSON
+                val usuarioJson = response.getJSONObject("usuario")
+                val usernameLogueado = usuarioJson.getString("username")
+                val rolUsuario = usuarioJson.getString("role")
+
                 val intento = Intent(this, Principal::class.java)
+
+                // Manejo de roles
+                intento.putExtra("USERNAME", usernameLogueado)
+                intento.putExtra("ROLE", rolUsuario)
+
                 startActivity(intento)
                 finish()
             },
