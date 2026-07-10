@@ -7,98 +7,101 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <LinearLayout
-       android:layout_width="150pt"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       android:padding="16dp"
-       android:background="@drawable/rounded_box_green"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent">
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#254445"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="INICIO DE SESIÓN"
+      android:textAlignment="center"
+      android:background="#254445"
+      android:textSize="22sp"
+      android:textStyle="bold"
+      android:textColor="@color/white"
+      android:layout_marginBottom="24dp" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_marginBottom="16dp">
 
       <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="INICIO DE SESIÓN"
-          android:textAlignment="center"
-          android:textSize="20dp"
-          android:textColor="@color/white"
-          android:background="@color/cardview_dark_background">
+        android:id="@+id/Usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Usuario"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:alpha="0.8"
+        android:layout_marginBottom="4dp" />
 
-      </TextView>
+      <EditText
+        android:id="@+id/ctUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textColor="@color/white"
+        android:ems="10"
+        android:inputType="text"
+        android:textSize="16sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:backgroundTint="@color/white" />
+    </LinearLayout>
 
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_marginBottom="24dp">
 
-         <TextView
-             android:id="@+id/Usuario"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:textColor="@color/white"
-             android:text="Usuario:"
-             android:textSize="24sp">
+      <TextView
+        android:id="@+id/Contraseña"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Contraseña"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:alpha="0.8"
+        android:layout_marginBottom="4dp" />
 
-         </TextView>
+      <EditText
+        android:id="@+id/ctContraseña"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textColor="@color/white"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="16sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:backgroundTint="@color/white" />
+    </LinearLayout>
 
-         <EditText
-             android:id="@+id/ctUsuario"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:textColor="@color/white"
-             android:ems="10"
-             android:inputType="text"
-             android:textSize="24dp">
+    <Button
+      android:id="@+id/btnAcceder"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:text="ACCEDER"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      android:textColor="@color/white"
+      android:backgroundTint="#BFA067"
+      app:cornerRadius="8dp" />
 
-         </EditText>
-
-      </LinearLayout>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-
-         <TextView
-             android:id="@+id/Contraseña"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:textColor="@color/white"
-             android:text="Contraseña:"
-             android:textSize="24sp">
-
-         </TextView>
-
-         <EditText
-             android:id="@+id/ctContraseña"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:textColor="@color/white"
-             android:ems="10"
-             android:inputType="textPassword"
-             android:textSize="24dp">
-
-         </EditText>
-
-      </LinearLayout>
-
-      <Button
-          android:id="@+id/btnAcceder"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:text="ACCEDER"
-          android:layout_marginTop="16dp"
-          android:backgroundTint="@color/black">
-
-      </Button>
-   </LinearLayout>
+  </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
