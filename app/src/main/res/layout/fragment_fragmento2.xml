@@ -9,7 +9,23 @@
     android:background="#254445">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+  <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#254445">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="20dp">
+
+      <!-- Título Principal -->
+      <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,216 +34,237 @@
         android:layout_marginBottom="24dp"
         android:text="CATÁLOGO DE PACIENTES"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.04" />
 
-    <LinearLayout
+      <!-- Campos Invisibles para mantener compatibilidad con los IDs viejos -->
+      <TextView android:id="@+id/lblClave" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+      <TextView android:id="@+id/lblNombre" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+      <TextView android:id="@+id/lblEdad" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+      <TextView android:id="@+id/lblEnfermedad" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+      <TextView android:id="@+id/lblFecha" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+
+      <!-- Fila: Clave y Edad agrupados para optimizar espacio -->
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp"
+        android:baselineAligned="false">
 
-        <TextView
-            android:id="@+id/lblClave"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Clave:"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+        <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1.2"
+          android:layout_marginEnd="8dp"
+          android:hint="Clave"
+          android:textColorHint="#B3FFFFFF"
+          app:hintTextColor="@color/white"
+          app:boxStrokeColor="@color/white"
+          app:boxCornerRadiusTopStart="8dp"
+          app:boxCornerRadiusTopEnd="8dp"
+          app:boxCornerRadiusBottomStart="8dp"
+          app:boxCornerRadiusBottomEnd="8dp"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
+          <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etClave"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/lblNombre"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Nombre:"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/etNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-    </LinearLayout>
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.8"
+          android:hint="Edad"
+          android:textColorHint="#B3FFFFFF"
+          app:hintTextColor="@color/white"
+          app:boxStrokeColor="@color/white"
+          app:boxCornerRadiusTopStart="8dp"
+          app:boxCornerRadiusTopEnd="8dp"
+          app:boxCornerRadiusBottomStart="8dp"
+          app:boxCornerRadiusBottomEnd="8dp"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEdad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+      </LinearLayout>
+
+      <!-- Campo: Nombre Completo -->
+      <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_marginBottom="14dp"
+        android:hint="Nombre completo"
+        android:textColorHint="#B3FFFFFF"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <TextView
-            android:id="@+id/lblEdad"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Edad:"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/etNombre"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="textPersonName"
+          android:textColor="@color/white"
+          android:textSize="15sp" />
+      </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etEdad"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:inputType="number"
-            android:minHeight="48dp"
-            android:padding="8dp" />
+      <!-- Campo: Enfermedad / Padecimiento -->
+      <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:hint="Enfermedad / Diagnóstico"
+        android:textColorHint="#B3FFFFFF"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/etEnfermedad"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"
+          android:textColor="@color/white"
+          android:textSize="15sp" />
+      </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <TextView
-      android:id="@+id/lblEnfermedad"
-      android:layout_width="120dp"
-      android:layout_height="wrap_content"
-      android:text="Enfermedad:"
-      android:textColor="#FFFFFF"
-      android:textSize="18sp" />
-
-    <EditText
-      android:id="@+id/etEnfermedad"
-      android:layout_width="140dp"
-      android:layout_height="wrap_content"
-      android:background="@android:drawable/editbox_background"
-      android:inputType="text"
-      android:minHeight="48dp"
-      android:padding="8dp" />
-  </LinearLayout>
-
-    <LinearLayout
+      <!-- Campo: Fecha de Nacimiento -->
+      <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:focusable="false"
-        android:clickable="true">
+        android:hint="Fecha de nacimiento (AAAA/MM/DD)"
+        android:textColorHint="#B3FFFFFF"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_calendar_month_24"
+        app:endIconTint="@color/white"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <TextView
-            android:id="@+id/lblFecha"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Fecha\nnacimiento:"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/etFechaNacimiento"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="date"
+          android:maxLength="10"
+          android:focusable="false"
+          android:clickable="true"
+          android:textColor="@color/white"
+          android:textSize="15sp" />
+      </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etFechaNacimiento"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:hint="AAAA/MM/DD"
-            android:inputType="date"
-            android:maxLength="10"
-            android:minHeight="48dp"
-            android:padding="8dp"
-            android:focusable="false"
-            android:clickable="true"
-            android:drawableEnd="@drawable/baseline_calendar_month_24"
-            android:drawableTint="#000000" />
-    </LinearLayout>
-
-    <LinearLayout
+      <!-- Fila de Botones de Acción Modificados -->
+      <LinearLayout
         android:id="@+id/layoutBotones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="28dp"
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <Button
-            android:id="@+id/btnNuevo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:backgroundTint="#BFA067"
-            android:text="Nuevo"
-            android:textColor="#FFFFFF" />
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnNuevo"
+          android:layout_width="0dp"
+          android:layout_height="48dp"
+          android:layout_margin="4dp"
+          android:layout_weight="1"
+          android:backgroundTint="#4A6B6C"
+          android:text="Nuevo"
+          android:textSize="12sp"
+          android:textColor="#FFFFFF"
+          app:cornerRadius="6dp" />
 
-        <Button
-            android:id="@+id/btnGuardar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:backgroundTint="#BFA067"
-            android:text="Guardar"
-            android:textColor="#FFFFFF" />
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnGuardar"
+          android:layout_width="0dp"
+          android:layout_height="48dp"
+          android:layout_margin="4dp"
+          android:layout_weight="1"
+          android:backgroundTint="#BFA067"
+          android:text="Guardar"
+          android:textSize="12sp"
+          android:textColor="#FFFFFF"
+          app:cornerRadius="6dp" />
 
-        <Button
-            android:id="@+id/btnEliminar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:backgroundTint="#BFA067"
-            android:text="Eliminar"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnEliminar"
+          android:layout_width="0dp"
+          android:layout_height="48dp"
+          android:layout_margin="4dp"
+          android:layout_weight="1"
+          android:backgroundTint="#A63A3A"
+          android:text="Eliminar"
+          android:textSize="12sp"
+          android:textColor="#FFFFFF"
+          app:cornerRadius="6dp" />
+      </LinearLayout>
 
-    <LinearLayout
+      <!-- Cabecera de la Lista -->
+      <LinearLayout
         android:id="@+id/layoutHeaderGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#BFA067"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp">
 
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Clave"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+          android:layout_width="90dp"
+          android:layout_height="wrap_content"
+          android:text="Clave"
+          android:textColor="#FFFFFF"
+          android:textSize="14sp"
+          android:textStyle="bold"
+          android:letterSpacing="0.02" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nombre"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Nombre del Paciente"
+          android:textColor="#FFFFFF"
+          android:textSize="14sp"
+          android:textStyle="bold"
+          android:letterSpacing="0.02" />
+      </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+      <!-- Lista de Pacientes -->
+      <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvClientes"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/perimeter_square_box"
-        android:layout_marginTop="4dp"
+        android:layout_height="220dp"
+        android:background="#1E3738"
         android:padding="4dp"
+        android:elevation="2dp"
         tools:listitem="@android:layout/simple_list_item_2" />
+
+    </LinearLayout>
+  </ScrollView>
 
 </LinearLayout>

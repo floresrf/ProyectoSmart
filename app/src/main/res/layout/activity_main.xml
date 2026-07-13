@@ -14,7 +14,7 @@
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="28dp"
     android:background="#254445"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -26,82 +26,99 @@
       android:layout_height="wrap_content"
       android:text="INICIO DE SESIÓN"
       android:textAlignment="center"
-      android:background="#254445"
-      android:textSize="22sp"
+      android:textSize="24sp"
       android:textStyle="bold"
       android:textColor="@color/white"
-      android:layout_marginBottom="24dp" />
+      android:letterSpacing="0.05"
+      android:layout_marginBottom="32dp" />
 
-    <LinearLayout
+    <!-- Campo: Usuario -->
+    <com.google.android.material.textfield.TextInputLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:layout_marginBottom="16dp">
+      android:layout_marginBottom="20dp"
+      android:hint="Usuario"
+      android:textColorHint="#B3FFFFFF"
+      app:hintTextColor="@color/white"
+      app:boxStrokeColor="@color/white"
+      app:boxStrokeWidth="1dp"
+      app:boxStrokeWidthFocused="2dp"
+      app:boxCornerRadiusTopStart="8dp"
+      app:boxCornerRadiusTopEnd="8dp"
+      app:boxCornerRadiusBottomStart="8dp"
+      app:boxCornerRadiusBottomEnd="8dp"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
+      <!-- Mantiene el ID oculto solicitado originalmente por si se usa en Backend,
+           pero el texto visual ahora vive en el Hint dinámico de Material -->
       <TextView
         android:id="@+id/Usuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="Usuario"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:alpha="0.8"
-        android:layout_marginBottom="4dp" />
+        android:visibility="gone" />
 
-      <EditText
+      <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ctUsuario"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:textColor="@color/white"
-        android:ems="10"
+        android:layout_height="wrap_content"
         android:inputType="text"
+        android:textColor="@color/white"
         android:textSize="16sp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:backgroundTint="@color/white" />
-    </LinearLayout>
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <!-- Campo: Contraseña -->
+    <com.google.android.material.textfield.TextInputLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:layout_marginBottom="24dp">
+      android:layout_marginBottom="32dp"
+      android:hint="Contraseña"
+      android:textColorHint="#B3FFFFFF"
+      app:hintTextColor="@color/white"
+      app:boxStrokeColor="@color/white"
+      app:boxStrokeWidth="1dp"
+      app:boxStrokeWidthFocused="2dp"
+      app:boxCornerRadiusTopStart="8dp"
+      app:boxCornerRadiusTopEnd="8dp"
+      app:boxCornerRadiusBottomStart="8dp"
+      app:boxCornerRadiusBottomEnd="8dp"
+      app:passwordToggleEnabled="true"
+      app:passwordToggleTint="@color/white"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
       <TextView
         android:id="@+id/Contraseña"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="Contraseña"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:alpha="0.8"
-        android:layout_marginBottom="4dp" />
+        android:visibility="gone" />
 
-      <EditText
+      <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ctContraseña"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:textColor="@color/white"
-        android:ems="10"
+        android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:textColor="@color/white"
         android:textSize="16sp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:backgroundTint="@color/white" />
-    </LinearLayout>
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <!-- Botón de Acceso -->
+    <com.google.android.material.button.MaterialButton
       android:id="@+id/btnAcceder"
       android:layout_width="match_parent"
-      android:layout_height="50dp"
+      android:layout_height="54dp"
       android:text="ACCEDER"
       android:textSize="16sp"
       android:textStyle="bold"
       android:textColor="@color/white"
       android:backgroundTint="#BFA067"
-      app:cornerRadius="8dp" />
+      android:letterSpacing="0.08"
+      app:cornerRadius="8dp"
+      app:rippleColor="#4DFFFFFF" />
 
   </LinearLayout>
 

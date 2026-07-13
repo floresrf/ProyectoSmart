@@ -8,13 +8,239 @@
   >
 
     <!-- TODO: Update blank fragment layout -->
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#254445"
+    android:padding="20dp">
+
+    <!-- Tu encabezado original (corregido ortográficamente a "Visualización") -->
     <TextView
-        android:id="@+id/textView3"
+      android:id="@+id/textView3"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Visualización de Pacientes"
+      android:textAlignment="center"
+      android:textColor="@color/white"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      android:letterSpacing="0.03"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="16dp" />
+
+    <!-- Subtítulo / Info del Trabajador / Enfermero Médico -->
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Pacientes asignados a su turno"
+      android:textAlignment="center"
+      android:textColor="#BFA067"
+      android:textSize="14sp"
+      android:textStyle="italic"
+      android:layout_marginBottom="24dp" />
+
+    <!-- Contenedor de la lista (Simulado con un ScrollView para ver el diseño) -->
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:scrollbars="none">
+
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Pantalla de vizualizacion de los pacientes (trabajador)"
-        android:textAlignment="center"
-        android:textSize="30sp"/>
+        android:orientation="vertical">
+
+        <!-- PACIENTE 1 (Tarjeta de ejemplo) -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:background="#1E3738"
+          android:padding="16dp"
+          android:layout_marginBottom="12dp"
+          android:gravity="center_vertical">
+
+          <!-- Indicador visual de estado o prioridad (Dorado) -->
+          <View
+            android:layout_width="4dp"
+            android:layout_height="45dp"
+            android:background="#BFA067"
+            android:layout_marginEnd="12dp"/>
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Carlos Mendoza Ruiz"
+              android:textColor="@color/white"
+              android:textSize="16sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Clave: PAC-0042  •  Edad: 68 años"
+              android:textColor="#B3FFFFFF"
+              android:textSize="13sp"
+              android:layout_marginTop="2dp" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Diagnóstico: Hipertensión Arterial"
+              android:textColor="#BFA067"
+              android:textSize="12sp"
+              android:layout_marginTop="4dp"
+              android:textStyle="italic" />
+          </LinearLayout>
+
+          <!-- Icono indicador de Alarma activa / Próxima entrega -->
+          <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_lock_idle_alarm"
+            android:contentDescription="Alarma programada"
+            android:Tint="#BFA067" />
+        </LinearLayout>
+
+        <!-- PACIENTE 2 (Tarjeta de ejemplo) -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:background="#1E3738"
+          android:padding="16dp"
+          android:layout_marginBottom="12dp"
+          android:gravity="center_vertical">
+
+          <View
+            android:layout_width="4dp"
+            android:layout_height="45dp"
+            android:background="#BFA067"
+            android:layout_marginEnd="12dp"/>
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Elena Rostova Gómez"
+              android:textColor="@color/white"
+              android:textSize="16sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Clave: PAC-0109  •  Edad: 45 años"
+              android:textColor="#B3FFFFFF"
+              android:textSize="13sp"
+              android:layout_marginTop="2dp" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Diagnóstico: Diabetes Tipo 2"
+              android:textColor="#BFA067"
+              android:textSize="12sp"
+              android:layout_marginTop="4dp"
+              android:textStyle="italic" />
+          </LinearLayout>
+
+          <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_lock_idle_alarm"
+            android:contentDescription="Alarma programada"
+            android:Tint="#BFA067" />
+        </LinearLayout>
+
+        <!-- PACIENTE 3 (Tarjeta de ejemplo) -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:background="#1E3738"
+          android:padding="16dp"
+          android:layout_marginBottom="12dp"
+          android:gravity="center_vertical">
+
+          <View
+            android:layout_width="4dp"
+            android:layout_height="45dp"
+            android:background="#BFA067"
+            android:layout_marginEnd="12dp"/>
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Marcos Juárez Beltrán"
+              android:textColor="@color/white"
+              android:textSize="16sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Clave: PAC-0075  •  Edad: 72 años"
+              android:textColor="#B3FFFFFF"
+              android:textSize="13sp"
+              android:layout_marginTop="2dp" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Diagnóstico: Insuficiencia Renal"
+              android:textColor="#BFA067"
+              android:textSize="12sp"
+              android:layout_marginTop="4dp"
+              android:textStyle="italic" />
+          </LinearLayout>
+
+          <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_lock_idle_alarm"
+            android:contentDescription="Alarma programada"
+            android:backgroundTint="#BFA067" />
+        </LinearLayout>
+
+      </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón inferior para alguna acción rápida, como Actualizar Lista o un Menú Principal -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnRegresarMenu"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:text="VOLVER AL MENÚ"
+      android:textSize="15sp"
+      android:textStyle="bold"
+      android:textColor="@color/white"
+      android:backgroundTint="#BFA067"
+      android:layout_marginTop="16dp"
+      app:cornerRadius="8dp" />
+
+  </LinearLayout>
 
 </FrameLayout>

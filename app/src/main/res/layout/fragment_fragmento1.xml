@@ -8,13 +8,226 @@
   >
 
     <!-- TODO: Update blank fragment layout -->
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#254445"
+    android:padding="24dp">
+
+    <!-- Tu encabezado original (corregido ortográficamente a "Visualización") -->
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:textColor="@color/white"
+      android:id="@+id/textView1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Visualización de Alarmas"
+      android:textAlignment="center"
+      android:textColor="@color/white"
+      android:textSize="26sp"
+      android:textStyle="bold"
+      android:letterSpacing="0.03"
+      android:layout_marginBottom="32dp" />
+
+    <!-- Card Contenedora para la sección de Configuración -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:background="#1E3738"
+      android:padding="20dp"
+      android:elevation="4dp"
+      android:layout_marginBottom="24dp">
+
+      <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pantalla de vizualizacion de alarmas"
-        android:textAlignment="center"
-        android:textSize="30sp"/>
+        android:text="Nueva Alarma"
+        android:textColor="#BFA067"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="16dp"/>
+
+      <!-- Simulador de TimePicker Digital (Aspecto Premium) -->
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="07"
+          android:textColor="@color/white"
+          android:textSize="56sp"
+          android:textStyle="bold"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text=":"
+          android:textColor="#BFA067"
+          android:textSize="56sp"
+          android:textStyle="bold"
+          android:layout_marginHorizontal="8dp"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="30"
+          android:textColor="@color/white"
+          android:textSize="56sp"
+          android:textStyle="bold"/>
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_marginLeft="12dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AM"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PM"
+            android:textColor="#80FFFFFF"
+            android:textSize="14sp"/>
+        </LinearLayout>
+      </LinearLayout>
+
+      <!-- Selector de Días de la Semana -->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
+
+        <!-- Lunes (Seleccionado/Activo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="L"
+          android:gravity="center"
+          android:textColor="@color/white"
+          android:textStyle="bold"
+          android:background="#BFA067"
+          android:layout_margin="4dp"/>
+
+        <!-- Martes (Seleccionado/Activo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="M"
+          android:gravity="center"
+          android:textColor="@color/white"
+          android:textStyle="bold"
+          android:background="#BFA067"
+          android:layout_margin="4dp"/>
+
+        <!-- Miércoles (Inactivo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="M"
+          android:gravity="center"
+          android:textColor="#80FFFFFF"
+          android:background="#254445"
+          android:layout_margin="4dp"/>
+
+        <!-- Jueves (Seleccionado/Activo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="J"
+          android:gravity="center"
+          android:textColor="@color/white"
+          android:textStyle="bold"
+          android:background="#BFA067"
+          android:layout_margin="4dp"/>
+
+        <!-- Viernes (Inactivo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="V"
+          android:gravity="center"
+          android:textColor="#80FFFFFF"
+          android:background="#254445"
+          android:layout_margin="4dp"/>
+
+        <!-- Sábado (Inactivo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="S"
+          android:gravity="center"
+          android:textColor="#4DFFFFFF"
+          android:background="#254445"
+          android:layout_margin="4dp"/>
+
+        <!-- Domingo (Inactivo) -->
+        <TextView
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:text="D"
+          android:gravity="center"
+          android:textColor="#4DFFFFFF"
+          android:background="#254445"
+          android:layout_margin="4dp"/>
+      </LinearLayout>
+
+      <!-- Campo para Nombre/Etiqueta de Alarma -->
+      <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Etiqueta (Ej. Medicinas)"
+        android:textColorHint="#B3FFFFFF"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/ctNombreAlarma"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"
+          android:textColor="@color/white"
+          android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <!-- Botón de Guardar Alarma -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnGuardarAlarma"
+      android:layout_width="match_parent"
+      android:layout_height="54dp"
+      android:text="CONFIGURAR ALARMA"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      android:textColor="@color/white"
+      android:backgroundTint="#BFA067"
+      android:letterSpacing="0.05"
+      app:cornerRadius="8dp"
+      android:layout_marginTop=""/>
+
+  </LinearLayout>
 
 </FrameLayout>
