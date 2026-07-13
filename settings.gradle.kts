@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "ProyectoSmart"
 include(":app")
 include(":myapplication")
+include(":reloj")
