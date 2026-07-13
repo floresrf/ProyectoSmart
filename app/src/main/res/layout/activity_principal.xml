@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#138829"
+        android:background="#BFA067"
       />
 
     <androidx.viewpager2.widget.ViewPager2
