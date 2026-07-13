@@ -226,7 +226,7 @@
       android:backgroundTint="#BFA067"
       android:letterSpacing="0.05"
       app:cornerRadius="8dp"
-      android:layout_marginTop=""/>
+      />
 
   </LinearLayout>
 
