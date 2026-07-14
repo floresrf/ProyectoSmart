@@ -110,7 +110,7 @@
             android:layout_height="24dp"
             android:src="@android:drawable/ic_lock_idle_alarm"
             android:contentDescription="Alarma programada"
-            android:Tint="#BFA067" />
+            android:backgroundTint="#BFA067" />
         </LinearLayout>
 
         <!-- PACIENTE 2 (Tarjeta de ejemplo) -->
@@ -166,7 +166,7 @@
             android:layout_height="24dp"
             android:src="@android:drawable/ic_lock_idle_alarm"
             android:contentDescription="Alarma programada"
-            android:Tint="#BFA067" />
+            android:backgroundTint="#BFA067" />
         </LinearLayout>
 
         <!-- PACIENTE 3 (Tarjeta de ejemplo) -->

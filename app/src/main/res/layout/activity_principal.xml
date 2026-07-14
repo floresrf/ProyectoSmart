@@ -23,7 +23,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="#1E3738"
-      app:tabBackground="#1E3738"
       app:tabIndicatorColor="#BFA067"
       app:tabIndicatorHeight="3dp"
       app:tabSelectedTextColor="#BFA067"
