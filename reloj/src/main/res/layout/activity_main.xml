@@ -1,68 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#254445"
+  android:fillViewport="true"
+  tools:context=".MainActivity">
 
   <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#254445"
+    android:layout_height="wrap_content"
     android:gravity="center"
-    android:padding="12dp">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- Indicador de Alarma / Alerta de Pastilla -->
+    <!-- Hora de la Alarma -->
     <TextView
-      android:id="@+id/tvHoraAlarmaReloj"
+      android:id="@+id/tvHoraAlarma"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
       android:text="07:30 AM"
       android:textColor="#BFA067"
-      android:textSize="18sp"
-      android:textStyle="bold"
-      android:letterSpacing="0.02" />
+      android:textSize="22sp"
+      android:textStyle="bold" />
 
-    <!-- Nombre del Medicamento / Paciente Corto -->
+    <!-- Medicamento -->
     <TextView
-      android:id="@+id/tvMedicamentoReloj"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Paracetamol - 500mg"
-      android:textAlignment="center"
-      android:textColor="#FFFFFF"
-      android:textSize="12sp"
-      android:alpha="0.9"
-      android:ellipsize="end"
-      android:maxLines="1"
-      android:layout_marginTop="2dp"
-      android:layout_marginBottom="12dp" />
-
-    <!-- Botón Principal de Dispensado Rápido (Estilo Circular para Reloj) -->
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/btnDispensarReloj"
-      android:layout_width="96dp"
-      android:layout_height="96dp"
-      android:backgroundTint="#BFA067"
-      android:text="DISPENSAR\nAHORA"
-      android:textSize="11sp"
-      android:textStyle="bold"
-      android:textColor="#FFFFFF"
-      android:insetTop="0dp"
-      android:insetBottom="0dp"
-      android:gravity="center"
-      android:lineSpacingMultiplier="0.9"
-      app:cornerRadius="48dp"
-      app:iconGravity="top"
-      app:rippleColor="#4DFFFFFF" />
-
-    <!-- Recordatorio Pequeño Inferior -->
-    <TextView
-      android:id="@+id/tvStatusReloj"
+      android:id="@+id/tvMedicamento"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Alarma Activa"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="12dp"
+      android:text="Paracetamol - 500mg"
       android:textColor="#FFFFFF"
-      android:textSize="10sp"
-      android:alpha="0.6"
-      android:layout_marginTop="8dp" />
+      android:textSize="13sp"
+      android:textAlignment="center" />
+
+    <!-- Botón Dispensar -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnDispensarAhora"
+      android:layout_width="120dp"
+      android:layout_height="64dp"
+      android:backgroundTint="#BFA067"
+      android:text="DISPENSAR\nAHORA"
+      android:textColor="#FFFFFF"
+      android:textSize="11sp"
+      android:textStyle="bold"
+      app:cornerRadius="10dp" />
+
+    <!-- Estado de Alarma -->
+    <TextView
+      android:id="@+id/tvEstadoAlarma"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="Alarma Activa"
+      android:textColor="#80FFFFFF"
+      android:textSize="11sp" />
 
   </LinearLayout>
+</ScrollView>

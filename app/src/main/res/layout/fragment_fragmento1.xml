@@ -17,7 +17,6 @@
     android:background="#254445"
     android:padding="24dp">
 
-    <!-- Tu encabezado original (corregido ortográficamente a "Visualización") -->
     <TextView
       android:id="@+id/textView1"
       android:layout_width="match_parent"
@@ -30,7 +29,7 @@
       android:letterSpacing="0.03"
       android:layout_marginBottom="32dp" />
 
-    <!-- Card Contenedora para la sección de Configuración -->
+    <!-- Card Contenedora -->
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -50,16 +49,20 @@
         android:letterSpacing="0.05"
         android:layout_marginBottom="16dp"/>
 
-      <!-- Simulador de TimePicker Digital (Aspecto Premium) -->
+      <!-- Simulador / Selector de Hora Digital -->
       <LinearLayout
+        android:id="@+id/layoutHoraSelector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_marginBottom="24dp">
 
         <TextView
+          android:id="@+id/tvHora"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="07"
@@ -77,6 +80,7 @@
           android:layout_marginHorizontal="8dp"/>
 
         <TextView
+          android:id="@+id/tvMinuto"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="30"
@@ -91,6 +95,7 @@
           android:layout_marginLeft="12dp">
 
           <TextView
+            android:id="@+id/tvAM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AM"
@@ -99,6 +104,7 @@
             android:textStyle="bold"/>
 
           <TextView
+            android:id="@+id/tvPM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PM"
@@ -115,8 +121,8 @@
         android:gravity="center"
         android:layout_marginBottom="24dp">
 
-        <!-- Lunes (Seleccionado/Activo) -->
         <TextView
+          android:id="@+id/btnLunes"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="L"
@@ -126,8 +132,8 @@
           android:background="#BFA067"
           android:layout_margin="4dp"/>
 
-        <!-- Martes (Seleccionado/Activo) -->
         <TextView
+          android:id="@+id/btnMartes"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="M"
@@ -137,8 +143,8 @@
           android:background="#BFA067"
           android:layout_margin="4dp"/>
 
-        <!-- Miércoles (Inactivo) -->
         <TextView
+          android:id="@+id/btnMiercoles"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="M"
@@ -147,8 +153,8 @@
           android:background="#254445"
           android:layout_margin="4dp"/>
 
-        <!-- Jueves (Seleccionado/Activo) -->
         <TextView
+          android:id="@+id/btnJueves"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="J"
@@ -158,8 +164,8 @@
           android:background="#BFA067"
           android:layout_margin="4dp"/>
 
-        <!-- Viernes (Inactivo) -->
         <TextView
+          android:id="@+id/btnViernes"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="V"
@@ -168,8 +174,8 @@
           android:background="#254445"
           android:layout_margin="4dp"/>
 
-        <!-- Sábado (Inactivo) -->
         <TextView
+          android:id="@+id/btnSabado"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="S"
@@ -178,8 +184,8 @@
           android:background="#254445"
           android:layout_margin="4dp"/>
 
-        <!-- Domingo (Inactivo) -->
         <TextView
+          android:id="@+id/btnDomingo"
           android:layout_width="36dp"
           android:layout_height="36dp"
           android:text="D"
@@ -189,7 +195,7 @@
           android:layout_margin="4dp"/>
       </LinearLayout>
 
-      <!-- Campo para Nombre/Etiqueta de Alarma -->
+      <!-- Campo Etiqueta -->
       <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -214,7 +220,7 @@
 
     </LinearLayout>
 
-    <!-- Botón de Guardar Alarma -->
+    <!-- Botón Guardar -->
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnGuardarAlarma"
       android:layout_width="match_parent"
