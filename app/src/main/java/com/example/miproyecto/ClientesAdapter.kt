@@ -1,10 +1,10 @@
 package com.example.miproyecto
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -20,13 +20,17 @@ class ClientesAdapter(
     }
 
     override fun onBindViewHolder(holder: ClienteViewHolder, position: Int) {
-        val cliente: JSONObject = jsonArray.getJSONObject(position)
+        val paciente: JSONObject = jsonArray.getJSONObject(position)
 
-        holder.tvClaveRow.text = cliente.getString("clave")
-        holder.tvNombreRow.text = cliente.getString("nombre")
+        val id = paciente.optInt("id", 0)
+        val firstName = paciente.optString("first_name", "")
+        val lastName = paciente.optString("last_name", "")
+
+        holder.tvClaveRow.text = id.toString()
+        holder.tvNombreRow.text = "$firstName $lastName".trim()
 
         holder.itemView.setOnClickListener {
-            onClienteClickListener(cliente)
+            onClienteClickListener(paciente)
         }
     }
 

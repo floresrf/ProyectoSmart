@@ -5,55 +5,78 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
+import com.google.android.material.button.MaterialButton
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Fragmento3.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Fragmento3 : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // URL de asignaciones en Render
+    private val URL_ASIGNACIONES = "https://api-farmaalert-module.onrender.com/api/asignaciones"
+
+    private lateinit var rvPacientesTurno: RecyclerView
+    private lateinit var btnRegresarMenu: MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragmento3, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Fragmento3.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Fragmento3().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rvPacientesTurno = view.findViewById(R.id.rvPacientesTurno)
+        btnRegresarMenu = view.findViewById(R.id.btnRegresarMenu)
+
+        rvPacientesTurno.layoutManager = LinearLayoutManager(requireContext())
+
+        // 🎯 Cargar únicamente los pacientes del Enfermero ID: 1
+        cargarPacientesDeEnfermero(1)
+
+        btnRegresarMenu.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    private fun cargarPacientesDeEnfermero(idEnfermeroTarget: Int) {
+        val queue = Volley.newRequestQueue(requireContext())
+
+        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, URL_ASIGNACIONES, null,
+            { response ->
+                val listaFiltrada = org.json.JSONArray()
+
+                // Filtrar el JSON en el cliente para obtener solo las asignaciones de id_nurse = 1
+                for (i in 0 until response.length()) {
+                    val asignacion = response.getJSONObject(i)
+                    if (asignacion.optInt("id_nurse") == idEnfermeroTarget) {
+                        listaFiltrada.put(asignacion)
+                    }
                 }
+
+                if (listaFiltrada.length() == 0) {
+                    Toast.makeText(requireContext(), "No hay pacientes asignados al enfermero #$idEnfermeroTarget", Toast.LENGTH_SHORT).show()
+                }
+
+                // Cargar adaptador con la lista filtrada
+                val adapter = PacientesTurnoAdapter(listaFiltrada)
+                rvPacientesTurno.adapter = adapter
+            },
+            { error ->
+                Toast.makeText(requireContext(), "Error al cargar la lista de asignaciones", Toast.LENGTH_SHORT).show()
             }
+        )
+
+        // Configuración de Timeout por si Render está reanudando el servicio
+        jsonArrayRequest.retryPolicy = com.android.volley.DefaultRetryPolicy(
+            30000, 2, com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+
+        queue.add(jsonArrayRequest)
     }
 }
