@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="reloj">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-07-09T20:23:06.270991900Z">
+        <DropdownSelection timestamp="2026-08-13T18:50:04.134585700Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\usuario 10\.android\avd\2.7_QVGA.avd" />
+              <DeviceId pluginId="Default" identifier="serial=127.0.0.1:21513;connection=c90dd11a" />
             </handle>
           </Target>
         </DropdownSelection>
