@@ -2,22 +2,18 @@ package com.example.miproyecto
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
@@ -64,42 +60,61 @@ class MainActivity : AppCompatActivity() {
             put("password", passText)
         }
 
-        val queue = Volley.newRequestQueue(this)
+        // Bloquear temporalmente el botón e informar al usuario mientras despierta el servidor
+        btnAcceder.isEnabled = false
+        Toast.makeText(this, "Validando credenciales...", Toast.LENGTH_SHORT).show()
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, urlLogin, jsonBody,
+        val queue = Volley.newRequestQueue(applicationContext)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            urlLogin,
+            jsonBody,
             { response ->
-                val mensaje = response.getString("mensaje")
-                Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+                btnAcceder.isEnabled = true
+                try {
+                    val mensaje = response.optString("mensaje", "Inicio de sesión exitoso")
+                    Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
 
-                // Extraemos el username y el role del JSON
-                val usuarioJson = response.getJSONObject("usuario")
-                val usernameLogueado = usuarioJson.getString("username")
-                val rolUsuario = usuarioJson.getString("role")
+                    // Extraemos el username y el role del JSON de forma segura
+                    val usuarioJson = response.getJSONObject("usuario")
+                    val usernameLogueado = usuarioJson.optString("username", userText)
+                    val rolUsuario = usuarioJson.optString("role", "")
 
-                val intento = Intent(this, Principal::class.java)
+                    val intento = Intent(this, Principal::class.java)
 
-                // Manejo de roles
-                intento.putExtra("USERNAME", usernameLogueado)
-                intento.putExtra("ROLE", rolUsuario)
+                    // Manejo de roles
+                    intento.putExtra("USERNAME", usernameLogueado)
+                    intento.putExtra("ROLE", rolUsuario)
 
-                startActivity(intento)
-                finish()
+                    startActivity(intento)
+                    finish()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Error al procesar los datos de usuario", Toast.LENGTH_SHORT).show()
+                }
             },
             { error ->
-                // Errores controlados de Express (401 Contraseña mal, 404 No existe, 500 Caída)
+                btnAcceder.isEnabled = true
                 val responseNetwork = error.networkResponse
                 if (responseNetwork != null && responseNetwork.data != null) {
                     try {
-                        val errorJson = JSONObject(String(responseNetwork.data))
-                        val mensajeError = errorJson.getString("mensaje")
+                        val errorJson = JSONObject(String(responseNetwork.data, Charsets.UTF_8))
+                        val mensajeError = errorJson.optString("mensaje", "Credenciales incorrectas")
                         Toast.makeText(this, mensajeError, Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         Toast.makeText(this, "Error al validar credenciales", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this, "Sin conexión con el servidor", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error de conexión o servidor despertando. Intenta de nuevo.", Toast.LENGTH_LONG).show()
                 }
             }
+        )
+
+        // Configuración de reintento con margen de 30 segundos para Render
+        jsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+            30000,
+            2,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         )
 
         queue.add(jsonObjectRequest)

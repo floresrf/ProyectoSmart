@@ -1,4 +1,4 @@
-package com.example.miproyecto // Ajusta según el paquete de tu proyecto
+package com.example.miproyecto // Asegúrate de que coincida con tu paquete real
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -16,8 +16,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.wearable.Wearable
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.Locale
 
@@ -123,11 +128,73 @@ class Fragmento1 : Fragment() {
     val amPmText = if (hora24 >= 12) "PM" else "AM"
     val horaTexto = "${tvHora.text}:${tvMinuto.text} $amPmText"
 
-    // Abrir la pantalla del reloj (MainActivity) enviando los datos
-    val intent = Intent(requireContext(), MainActivity::class.java).apply {
+    val contextSeguro = context ?: return
+    val alarmManager = contextSeguro.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+    // 1. Verificación de permiso para Android 12+ (Evita que la app truene al levantar la alarma)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      if (!alarmManager.canScheduleExactAlarms()) {
+        Toast.makeText(contextSeguro, "Permite programar alarmas exactas para continuar", Toast.LENGTH_LONG).show()
+        val intentPermiso = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+        startActivity(intentPermiso)
+        return
+      }
+    }
+
+    // 2. Definir la hora objetivo
+    val calendar = Calendar.getInstance().apply {
+      set(Calendar.HOUR_OF_DAY, hora24)
+      set(Calendar.MINUTE, minuto)
+      set(Calendar.SECOND, 0)
+      if (before(Calendar.getInstance())) {
+        add(Calendar.DAY_OF_MONTH, 1) // Si ya pasó la hora de hoy, se asigna a mañana
+      }
+    }
+
+    // 3. Crear el Intent para el Receiver
+    val intent = Intent(contextSeguro, AlarmReceiver::class.java).apply {
       putExtra("EXTRA_HORA", horaTexto)
       putExtra("EXTRA_MEDICAMENTO", etiqueta)
     }
-    startActivity(intent)
+
+    val pendingIntent = PendingIntent.getBroadcast(
+      contextSeguro,
+      1001,
+      intent,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    // 4. Programar la alarma en el sistema
+    alarmManager.setExactAndAllowWhileIdle(
+      AlarmManager.RTC_WAKEUP,
+      calendar.timeInMillis,
+      pendingIntent
+    )
+
+    // 5. Enviar actualización al reloj
+    enviarAlarmaAlReloj(horaTexto, etiqueta)
+
+    Toast.makeText(contextSeguro, "Alarma guardada y enviada al reloj", Toast.LENGTH_SHORT).show()
+  }
+
+  private fun enviarAlarmaAlReloj(hora: String, medicamento: String) {
+    // Usa lifecycleScope para cancelar el envío si te cambias de pestaña
+    lifecycleScope.launch(Dispatchers.IO) {
+      try {
+        // Se obtiene un contexto de aplicación seguro que no expira al cambiar de vista
+        val appContext = context?.applicationContext ?: return@launch
+
+        val nodes = Wearable.getNodeClient(appContext).connectedNodes.await()
+        val mensaje = "$hora|$medicamento"
+
+        for (node in nodes) {
+          Wearable.getMessageClient(appContext)
+            .sendMessage(node.id, "/configurar_alarma", mensaje.toByteArray())
+            .await()
+        }
+      } catch (e: Exception) {
+        e.printStackTrace()
+      }
+    }
   }
 }

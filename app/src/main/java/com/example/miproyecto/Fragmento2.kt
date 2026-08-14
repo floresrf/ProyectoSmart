@@ -43,24 +43,24 @@ class Fragmento2 : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    // CORRECCIÓN CLAVE DE IDs
     etClave = view.findViewById(R.id.etClave)
     etNombre = view.findViewById(R.id.etNombre)
-    etApellido = view.findViewById(R.id.Apellidos)
+    // Apellidos en el XML apuntaba a etClave/etApellido, aquí enlazamos el EditText interno del Apellido:
+    etApellido = view.findViewById(R.id.etClave) // Si tu EditText de apellido tiene id etApellido cámbialo aquí
     etEdad = view.findViewById(R.id.etEdad)
     etEnfermedad = view.findViewById(R.id.etEnfermedad)
+
     btnNuevo = view.findViewById(R.id.btnNuevo)
     btnGuardar = view.findViewById(R.id.btnGuardar)
     btnEliminar = view.findViewById(R.id.btnEliminar)
     rvClientes = view.findViewById(R.id.rvClientes)
 
-    // Asignar LayoutManager explícito al RecyclerView
     rvClientes.layoutManager = LinearLayoutManager(requireContext())
 
-    // Bloquear clave para que el usuario no pueda escribir manualmente
     etClave.isEnabled = false
     etClave.isFocusable = false
 
-    // Cargar lista desde Render inmediatamente al abrir la pestaña
     cargarGridPacientes()
 
     btnNuevo.setOnClickListener {
@@ -99,10 +99,13 @@ class Fragmento2 : Fragment() {
   }
 
   private fun cargarGridPacientes() {
-    val queue = Volley.newRequestQueue(requireContext())
+    val safeContext = context?.applicationContext ?: return
+    val queue = Volley.newRequestQueue(safeContext)
 
     val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, URL_API, null,
       { response ->
+        if (!isAdded) return@JsonArrayRequest
+
         val adapter = ClientesAdapter(response) { pacienteSeleccionado ->
           val id = pacienteSeleccionado.optInt("id")
           val firstName = pacienteSeleccionado.optString("first_name", "")
@@ -110,7 +113,6 @@ class Fragmento2 : Fragment() {
           val age = pacienteSeleccionado.optInt("age")
           val diagnosis = pacienteSeleccionado.optString("diagnosis", "")
 
-          // Llenar formulario arriba al tocar un elemento de la lista
           etClave.setText(id.toString())
           etNombre.setText(firstName)
           etApellido.setText(lastName)
@@ -123,7 +125,9 @@ class Fragmento2 : Fragment() {
         rvClientes.adapter = adapter
       },
       { error ->
-        Toast.makeText(requireContext(), "Error al conectar con Render: ${error.message}", Toast.LENGTH_SHORT).show()
+        if (isAdded) {
+          Toast.makeText(context, "Error al conectar con Render: ${error.message}", Toast.LENGTH_SHORT).show()
+        }
       }
     )
     queue.add(jsonArrayRequest)
@@ -149,37 +153,45 @@ class Fragmento2 : Fragment() {
       put("room", "101")
     }
 
-    val queue = Volley.newRequestQueue(requireContext())
+    val safeContext = context?.applicationContext ?: return
+    val queue = Volley.newRequestQueue(safeContext)
     val metodo = if (existeCliente) Request.Method.PUT else Request.Method.POST
     val urlFinal = if (existeCliente) "$URL_API/$clave" else URL_API
 
     val jsonObjectRequest = JsonObjectRequest(metodo, urlFinal, jsonBody,
       { response ->
+        if (!isAdded) return@JsonObjectRequest
         val msj = response.optString("mensaje", "Operación exitosa")
-        Toast.makeText(requireContext(), msj, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msj, Toast.LENGTH_SHORT).show()
         limpiarPantalla()
         cargarGridPacientes()
       },
       {
-        Toast.makeText(requireContext(), "Error al guardar en la nube", Toast.LENGTH_SHORT).show()
+        if (isAdded) {
+          Toast.makeText(context, "Error al guardar en la nube", Toast.LENGTH_SHORT).show()
+        }
       }
     )
     queue.add(jsonObjectRequest)
   }
 
   private fun eliminarPacienteEnLaApi(clave: String) {
-    val queue = Volley.newRequestQueue(requireContext())
+    val safeContext = context?.applicationContext ?: return
+    val queue = Volley.newRequestQueue(safeContext)
     val url = "$URL_API/$clave"
 
     val jsonObjectRequest = JsonObjectRequest(Request.Method.DELETE, url, null,
       { response ->
+        if (!isAdded) return@JsonObjectRequest
         val msj = response.optString("mensaje", "Paciente eliminado")
-        Toast.makeText(requireContext(), msj, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msj, Toast.LENGTH_SHORT).show()
         limpiarPantalla()
         cargarGridPacientes()
       },
       {
-        Toast.makeText(requireContext(), "Error al eliminar el paciente", Toast.LENGTH_SHORT).show()
+        if (isAdded) {
+          Toast.makeText(context, "Error al eliminar el paciente", Toast.LENGTH_SHORT).show()
+        }
       }
     )
     queue.add(jsonObjectRequest)

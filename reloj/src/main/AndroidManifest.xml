@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <!-- Permiso para mantener encendida la pantalla/reloj cuando suena la alarma -->
   <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+  <!-- Permisos para la sincronización por Wi-Fi / Red local con el teléfono -->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+  <!-- Declaración de que es una aplicación para Wear OS -->
   <uses-feature android:name="android.hardware.type.watch" />
 
   <application
@@ -12,7 +18,7 @@
       android:supportsRtl="true"
       android:theme="@android:style/Theme.DeviceDefault">
 
-    <!-- Se registra unicamente tu MainActivity apuntando al Launcher -->
+    <!-- Tu pantalla principal del reloj -->
     <activity
         android:name=".MainActivity"
         android:exported="true"
@@ -23,6 +29,21 @@
       </intent-filter>
     </activity>
 
+    <!-- Servicio para recibir las alarmas del teléfono en segundo plano -->
+    <service
+        android:name=".WearDataService"
+        android:exported="true">
+      <intent-filter>
+        <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+        <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+
+        <!-- Escuchamos las dos rutas enviadas desde la app móvil -->
+        <data android:scheme="wear" android:host="*" android:pathPrefix="/configurar_alarma" />
+        <data android:scheme="wear" android:host="*" android:pathPrefix="/activar_alarma" />
+      </intent-filter>
+    </service>
+
+    <!-- Librerías del sistema Wear OS -->
     <uses-library
         android:name="com.google.android.wearable"
         android:required="true" />
@@ -30,6 +51,7 @@
         android:name="wear-sdk"
         android:required="false" />
 
+    <!-- Indica que la app de reloj puede funcionar como Standalone -->
     <meta-data
         android:name="com.google.android.wearable.standalone"
         android:value="true" />
