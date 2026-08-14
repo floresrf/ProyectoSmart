@@ -35,12 +35,17 @@ android {
     }
   useLibrary("wear-sdk")
   buildFeatures {
-    compose = true
+    compose = false
   }
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
+
+  implementation("androidx.wear:wear:1.3.0")
+  implementation("com.google.android.material:material:1.11.0")
+  implementation("androidx.appcompat:appcompat:1.6.1")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.activity.ktx)
   implementation(libs.androidx.appcompat)
