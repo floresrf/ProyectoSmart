@@ -37,8 +37,8 @@ class Fragmento1 : Fragment() {
   private lateinit var btnGuardarAlarma: MaterialButton
 
   private val diasSeleccionados = mutableSetOf<Int>()
-  private var hora24 = 7
-  private var minuto = 30
+  private var hora24 = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+  private var minuto = Calendar.getInstance().get(Calendar.MINUTE)
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +53,19 @@ class Fragmento1 : Fragment() {
     layoutHoraSelector = view.findViewById(R.id.layoutHoraSelector)
     ctNombreAlarma = view.findViewById(R.id.ctNombreAlarma)
     btnGuardarAlarma = view.findViewById(R.id.btnGuardarAlarma)
+
+    // Inicializar la vista con el tiempo actual del sistema
+    val hora12 = if (hora24 % 12 == 0) 12 else hora24 % 12
+    tvHora.text = String.format(Locale.getDefault(), "%02d", hora12)
+    tvMinuto.text = String.format(Locale.getDefault(), "%02d", minuto)
+
+    if (hora24 >= 12) {
+      tvAM.setTextColor(Color.parseColor("#80FFFFFF"))
+      tvPM.setTextColor(Color.WHITE)
+    } else {
+      tvAM.setTextColor(Color.WHITE)
+      tvPM.setTextColor(Color.parseColor("#80FFFFFF"))
+    }
 
     layoutHoraSelector.setOnClickListener { abrirTimePicker() }
     configurarDiasSemanales(view)
@@ -100,6 +113,8 @@ class Fragmento1 : Fragment() {
     )
 
     diasSeleccionados.addAll(listOf(Calendar.MONDAY, Calendar.TUESDAY, Calendar.THURSDAY))
+    // También añadimos el día de hoy por defecto para facilitar las pruebas
+    diasSeleccionados.add(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
 
     mapaDias.forEach { (viewId, calendarDay) ->
       val tvDia = view.findViewById<TextView>(viewId)
@@ -142,24 +157,58 @@ class Fragmento1 : Fragment() {
     }
 
     // 2. Definir la hora objetivo
+    val hoy = Calendar.getInstance()
     val calendar = Calendar.getInstance().apply {
       set(Calendar.HOUR_OF_DAY, hora24)
       set(Calendar.MINUTE, minuto)
       set(Calendar.SECOND, 0)
-      if (before(Calendar.getInstance())) {
-        add(Calendar.DAY_OF_MONTH, 1) // Si ya pasó la hora de hoy, se asigna a mañana
+      set(Calendar.MILLISECOND, 0)
+    }
+
+    // Lógica para encontrar el próximo día válido según la selección
+    if (diasSeleccionados.isEmpty()) {
+      if (calendar.before(hoy)) {
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+      }
+    } else {
+      var diasEncontrado = false
+
+      // Probamos desde hoy (0) hasta dentro de 7 días
+      for (i in 0..7) {
+        val diaPrueba = (hoy.get(Calendar.DAY_OF_WEEK) + i - 1) % 7 + 1
+        if (diasSeleccionados.contains(diaPrueba)) {
+          val tempCal = hoy.clone() as Calendar
+          tempCal.add(Calendar.DAY_OF_MONTH, i)
+          tempCal.set(Calendar.HOUR_OF_DAY, hora24)
+          tempCal.set(Calendar.MINUTE, minuto)
+          tempCal.set(Calendar.SECOND, 0)
+          tempCal.set(Calendar.MILLISECOND, 0)
+
+          // Si es hoy y la hora ya pasó (por segundos), buscamos el siguiente día
+          if (tempCal.after(hoy)) {
+            calendar.timeInMillis = tempCal.timeInMillis
+            diasEncontrado = true
+            break
+          }
+        }
+      }
+
+      if (!diasEncontrado) {
+        Toast.makeText(contextSeguro, "No se encontró un día válido en la selección", Toast.LENGTH_SHORT).show()
+        return
       }
     }
 
-    // 3. Crear el Intent para el Receiver
+    // 3. Crear el Intent para el Receiver con ID ÚNICO
     val intent = Intent(contextSeguro, AlarmReceiver::class.java).apply {
       putExtra("EXTRA_HORA", horaTexto)
       putExtra("EXTRA_MEDICAMENTO", etiqueta)
     }
 
+    val uniqueId = System.currentTimeMillis().toInt()
     val pendingIntent = PendingIntent.getBroadcast(
       contextSeguro,
-      1001,
+      uniqueId,
       intent,
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
