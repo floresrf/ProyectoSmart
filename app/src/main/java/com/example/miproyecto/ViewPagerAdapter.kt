@@ -9,31 +9,20 @@ class ViewPagerAdapter(
     private val rolUsuario: String
 ) : FragmentStateAdapter(fragmentActivity) {
 
-    // Listas para manejar individualmente cada pestaña y su título
-    private val fragmentos = mutableListOf<Fragment>()
-    val titulos = mutableListOf<String>() // Público para que Principal lo pueda leer
+    val titulos = if (rolUsuario == "admin") {
+        listOf("Inicio", "Compras", "Clientes")
+    } else {
+        listOf("Inicio", "Compras")
+    }
 
-    init {
-        // Pestañas base (Todos los usuarios las ven)
-        agregarPestaña(Fragmento1(), "Inicio")
-        agregarPestaña(Fragmento3(), "Compras")
+    override fun getItemCount(): Int = titulos.size
 
-        // Pestañas condicionales (Control individual por rol)
-        if (rolUsuario == "admin") {
-            agregarPestaña(Fragmento2(), "Clientes")
-
+    override fun createFragment(position: Int): Fragment {
+        return when (position) {
+            0 -> Fragmento1()
+            1 -> Fragmento3()
+            2 -> if (rolUsuario == "admin") Fragmento2() else Fragmento3()
+            else -> Fragmento1()
         }
     }
-
-    // Función auxiliar para mantener el código limpio
-    private fun agregarPestaña(fragmento: Fragment, titulo: String) {
-        fragmentos.add(fragmento)
-        titulos.add(titulo)
-    }
-
-    // El tamaño ahora se calcula automáticamente basándose en la lista
-    override fun getItemCount(): Int = fragmentos.size
-
-    // Devuelve el fragmento exacto de la lista
-    override fun createFragment(position: Int): Fragment = fragmentos[position]
 }

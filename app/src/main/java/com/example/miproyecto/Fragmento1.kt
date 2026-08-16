@@ -1,5 +1,8 @@
 package com.example.miproyecto // Asegúrate de que coincida con tu paquete real
 
+import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
@@ -76,29 +79,35 @@ class Fragmento1 : Fragment() {
   }
 
   private fun abrirTimePicker() {
-    val timePicker = TimePickerDialog(
-      requireContext(),
-      { _, selectedHour, selectedMinute ->
-        hora24 = selectedHour
-        minuto = selectedMinute
+    val ctx = context ?: return
+    
+    try {
+      val timePicker = TimePickerDialog(
+        ctx,
+        { _, selectedHour, selectedMinute ->
+          hora24 = selectedHour
+          minuto = selectedMinute
 
-        val hora12 = if (selectedHour % 12 == 0) 12 else selectedHour % 12
-        tvHora.text = String.format(Locale.getDefault(), "%02d", hora12)
-        tvMinuto.text = String.format(Locale.getDefault(), "%02d", selectedMinute)
+          val hora12 = if (selectedHour % 12 == 0) 12 else selectedHour % 12
+          tvHora.text = String.format(Locale.getDefault(), "%02d", hora12)
+          tvMinuto.text = String.format(Locale.getDefault(), "%02d", selectedMinute)
 
-        if (selectedHour >= 12) {
-          tvAM.setTextColor(Color.parseColor("#80FFFFFF"))
-          tvPM.setTextColor(Color.WHITE)
-        } else {
-          tvAM.setTextColor(Color.WHITE)
-          tvPM.setTextColor(Color.parseColor("#80FFFFFF"))
-        }
-      },
-      hora24,
-      minuto,
-      false
-    )
-    timePicker.show()
+          if (selectedHour >= 12) {
+            tvAM.setTextColor(Color.parseColor("#80FFFFFF"))
+            tvPM.setTextColor(Color.WHITE)
+          } else {
+            tvAM.setTextColor(Color.WHITE)
+            tvPM.setTextColor(Color.parseColor("#80FFFFFF"))
+          }
+        },
+        hora24,
+        minuto,
+        false
+      )
+      timePicker.show()
+    } catch (e: Exception) {
+      Toast.makeText(ctx, "Error al abrir el selector de hora", Toast.LENGTH_SHORT).show()
+    }
   }
 
   private fun configurarDiasSemanales(view: View) {
@@ -118,6 +127,16 @@ class Fragmento1 : Fragment() {
 
     mapaDias.forEach { (viewId, calendarDay) ->
       val tvDia = view.findViewById<TextView>(viewId)
+      
+      // Actualizar el estado visual inicial según los días seleccionados por defecto
+      if (diasSeleccionados.contains(calendarDay)) {
+        tvDia.setBackgroundColor(Color.parseColor("#BFA067"))
+        tvDia.setTextColor(Color.WHITE)
+      } else {
+        tvDia.setBackgroundColor(Color.parseColor("#254445"))
+        tvDia.setTextColor(Color.parseColor("#80FFFFFF"))
+      }
+
       tvDia?.setOnClickListener {
         if (diasSeleccionados.contains(calendarDay)) {
           diasSeleccionados.remove(calendarDay)
@@ -205,7 +224,9 @@ class Fragmento1 : Fragment() {
       putExtra("EXTRA_MEDICAMENTO", etiqueta)
     }
 
-    val uniqueId = System.currentTimeMillis().toInt()
+    // Usar un ID basado en el tiempo pero truncado de forma segura para evitar overflow negativo si se desea,
+    // o simplemente usar un número aleatorio positivo.
+    val uniqueId = (System.currentTimeMillis() % Int.MAX_VALUE).toInt()
     val pendingIntent = PendingIntent.getBroadcast(
       contextSeguro,
       uniqueId,
@@ -234,15 +255,33 @@ class Fragmento1 : Fragment() {
         val appContext = context?.applicationContext ?: return@launch
 
         val nodes = Wearable.getNodeClient(appContext).connectedNodes.await()
+        
+        Log.d("Sincronizacion", "Buscando relojes... Nodos encontrados: ${nodes.size}")
+
+        if (nodes.isEmpty()) {
+          Handler(Looper.getMainLooper()).post {
+            Toast.makeText(appContext, "Reloj no detectado. Revisa la conexión del emulador.", Toast.LENGTH_LONG).show()
+          }
+          return@launch
+        }
+
         val mensaje = "$hora|$medicamento"
 
         for (node in nodes) {
+          Log.d("Sincronizacion", "Enviando configuración a nodo: ${node.displayName} (ID: ${node.id})")
+          
+          // Enviamos usando el cliente de mensajes directamente al ID del nodo
           Wearable.getMessageClient(appContext)
             .sendMessage(node.id, "/configurar_alarma", mensaje.toByteArray())
-            .await()
+            .addOnSuccessListener {
+                Log.d("Sincronizacion", "¡Mensaje enviado con éxito al buffer de Google Play Services!")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Sincronizacion", "Fallo al entregar el mensaje al buffer", e)
+            }
         }
       } catch (e: Exception) {
-        e.printStackTrace()
+        Log.e("Sincronizacion", "Error al enviar mensaje al reloj", e)
       }
     }
   }
